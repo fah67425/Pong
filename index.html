@@ -8,23 +8,32 @@
     <script src="main.js"></script>
 </head>
 <body>
-    <div>
+    <div id="startscreen">
         <h1>PONG</h1>
-        <p>press start to play (NO CHEATING)</p>
-        <p>select the difficulties, if you play multiplayer, move left paddle with W/S and right paddle with I/K</p>
-        <button id="playbutton">START -></button>
-    </div>     
+        <p>select the difficulties, if you play multiplayer,
+           move left paddle with W/S and right paddle with I/K</p>
 
-    <div id="menu">
-        <h2>GAME MODE</h2>
-        <p>choose your difficulty:</p>
-        <button id="difficulty1">easy</button>
-        <button id="difficulty2">medium</button>
-        <button id="difficulty3">hard</button>
-        <p>or play with a friend!( mobile play didnt support :[  )</p>
-        <button id="multiplayer">multiplayer</button>
+        <div id="difficultybtn">
+            <button id="difficulty1" class="difficulty selected">easy</button>
+            <button id="difficulty2" class="difficulty">medium</button>
+            <button id="difficulty3" class="difficulty">hard</button>
+            <p>or play with a friend!  (mobile didnt support multiplayer :[     )</p>
+            <button id="multiplayer" class="difficulty">multiplayer</button>
+        </div>
+        <button id="playbutton">START -></button>
     </div>
-    <canvas id="board"></canvas>
+
+    <div id="gamescreen">
+        <div id="gametext">
+            <span id="score">0 - 0</span>
+            <button id="roundbtn">PAUSE</button>
+        </div>
+        <canvas id="board"></canvas>
+    </div>
+
+    <div id="roundmenu">
+        <button id="resumebtn">RESUME</button>
+    </div>
     <div id="pausetext">PAUSED</div>
 </body>
 </html>

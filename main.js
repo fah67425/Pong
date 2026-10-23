@@ -46,7 +46,7 @@ let player2score = 0;
 //game state
 let gamestarted = false;
 let paused = false;
-let gamemode = "multiplayer";
+let gamemode = "bot";
 let difficulty = "1";
 let botspeed = 1.5;
 
@@ -62,45 +62,62 @@ window.onload = function () {
     board.width = boardwidth;
     context = board.getContext("2d");
 
+
+    document.getElementById("roundbtn").addEventListener("click", togglePause);
+    document.getElementById("resumebtn").addEventListener("click", togglePause);
+    const gamescreeen = document.getElementById("gamescreen");
     const playbutton = document.getElementById("playbutton");
     const startscreen = document.getElementById("startscreen");
     playbutton.addEventListener("click", () => {
         gamestarted = true;
         startscreen.style.display = "none";
+        gamescreeen.style.display = "flex";
     });
 
     document.addEventListener("keydown", moveplayer);
     document.addEventListener("keyup", stopplayer);
 
     document.getElementById("difficulty1").addEventListener("click", () => {
-        setdifficulty(1);
+        selectdifficulty("bot", 1);
     });
     document.getElementById("difficulty2").addEventListener("click", () => {
-        setdifficulty(2);
+        selectdifficulty("bot", 2);
     });
     document.getElementById("difficulty3").addEventListener("click", () => {
-        setdifficulty(3);
+        selectdifficulty("bot", 3);
     });
     document.getElementById("multiplayer").addEventListener("click", () => {
-        gamemode = "multiplayer";
+        selectdifficulty("multiplayer", 1);
     })
 
     requestAnimationFrame(update);
 };
 
-function setdifficulty(level){
-    gamemode = "single-bot";
+function setdifficulty(level) {
     difficulty = level;
 
-    if (level == 1) {
-        botspeed = 1.5;
-    } else if (level == 2) {
-        botspeed = 2.5;
-    } else if (level == 3) {
-        botspeed = 4;
-    }
+    if (level == 1) botspeed = 1.5;
+    else if (level == 2) botspeed = 2.5;
+    else if (level == 3) botspeed = 4;
 
     player2.velocityY = 0;
+}
+
+function selectdifficulty(mode, level) {
+    gamemode = mode;
+    difficulty = level;
+
+    document.querySelectorAll(".difficulty").forEach(button => {
+        button.classList.remove("selected");
+    });
+
+    if (mode === "bot") {
+        document.getElementById("difficulty" + level).classList.add("selected");
+    } else {
+        document.getElementById("multiplayer").classList.add("selected");
+    }
+
+    setdifficulty(level);
 }
 
 function playhitsound() {
@@ -174,7 +191,7 @@ function update() {
             player1.y = nextplayer1Y;
         }
 
-        if (gamemode == "single-bot") {
+        if (gamemode == "bot") {
             let targetY = ball.y - player2.height / 2;
             let difference = targetY - player2.y;
 
@@ -314,16 +331,16 @@ function resetGame(direction) {
 }
 
 //pause with Space
-document.addEventListener("keydown", (e) => {
-    if (e.code == "Space" && gamestarted) {
-        paused = !paused;
-        const pausetext = document.getElementById("pausetext");
-        if (pausetext) {
-            pausetext.style.display = paused ? "block" : "none";
-        }
-    }
-});
+function togglePause() {
+    if (!gamestarted) return;
+    paused = !paused;
+    document.getElementById("pausetext").style.display = paused ? "block" : "none";
+    document.getElementById("roundmenu").style.display = paused ? "block" : "none";
+}
 
+document.addEventListener("keydown", (e) => {
+    if (e.code == "Space") togglePause();
+});
 //stoppaddle
 
 //board.addEventListener("pointerdown", handleSwipe);
@@ -344,3 +361,4 @@ function handleSwipe(e) {
         )
     );
 }
+
